@@ -1,26 +1,4 @@
-//
-// If you thought the last exercise was a deep dive, hold onto your
-// hat because we are about to descend into the computer's molten
-// core.
-//
-// (Shouting) DOWN HERE, THE BITS AND BYTES FLOW FROM RAM TO THE CPU
-// LIKE A HOT, DENSE FLUID. THE FORCES ARE INCREDIBLE. BUT HOW DOES
-// ALL OF THIS RELATE TO THE DATA IN OUR ZIG PROGRAMS? LET'S HEAD
-// BACK UP TO THE TEXT EDITOR AND FIND OUT.
-//
-// Ah, that's better. Now we can look at some familiar Zig code.
-//
-// @import() adds the imported code to your own. In this case, code
-// from the standard library is added to your program and compiled
-// with it. All of this will be loaded into RAM when it runs. Oh, and
-// that thing we name "const std"? That's a struct!
-//
 const std = @import("std");
-
-// Remember our old RPG Character struct? A struct is really just a
-// very convenient way to deal with memory. These fields (gold,
-// health, experience) are all values of a particular size. Add them
-// together and you have the size of the struct as a whole.
 
 const Character = struct {
     gold: u32 = 0,
@@ -28,21 +6,11 @@ const Character = struct {
     experience: u32 = 0,
 };
 
-// Here we create a character called "the_narrator" that is a constant
-// (immutable) instance of a Character struct. It is stored in your
-// program as data, and like the instruction code, it is loaded into
-// RAM when your program runs. The relative location of this data in
-// memory is hard-coded and neither the address nor the value changes.
-
 const the_narrator = Character{
     .gold = 12,
     .health = 99,
     .experience = 9000,
 };
-
-// This "global_wizard" character is very similar. The address for
-// this data won't change, but the data itself can since this is a var
-// and not a const.
 
 var global_wizard = Character{};
 
@@ -69,13 +37,6 @@ pub fn main() void {
         .gold = 30,
     };
 
-    // The "reward_xp" value is interesting. It's an immutable
-    // value, so even though it is local, it can be put in global
-    // data and shared between all invocations. But being such a
-    // small value, it may also simply be inlined as a literal
-    // value in your instruction code where it is used.  It's up
-    // to the compiler.
-
     const reward_xp: u32 = 200;
 
     // Now let's circle back around to that "std" struct we imported
@@ -87,7 +48,7 @@ pub fn main() void {
     // Let's assign the std.debug.print function to a const named
     // "print" so that we can use this new name later!
 
-    const print = ???;
+    const print = std.debug.print;
 
     // Now let's look at assigning and pointing to values in Zig.
     //
@@ -163,13 +124,13 @@ pub fn main() void {
     print("XP before:{}, ", .{glorp.experience});
 
     // Fix 1 of 2 goes here:
-    levelUp(glorp, reward_xp);
+    levelUp(&glorp, reward_xp);
 
     print("after:{}.\n", .{glorp.experience});
 }
 
 // Fix 2 of 2 goes here:
-fn levelUp(character_access: Character, xp: u32) void {
+fn levelUp(character_access: *Character, xp: u32) void {
     character_access.experience += xp;
 }
 

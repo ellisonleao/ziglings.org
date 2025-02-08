@@ -1,12 +1,3 @@
-//
-//    "Trunks and tails
-//     Are handy things"
-
-//     from Holding Hands
-//       by Lenore M. Link
-//
-// Now that we have tails all figured out, can you implement trunks?
-//
 const std = @import("std");
 
 const Elephant = struct {
@@ -27,7 +18,13 @@ const Elephant = struct {
     // Your Elephant trunk methods go here!
     // ---------------------------------------------------
 
-    ???
+    pub fn hasTrunk(self: *Elephant) bool {
+        return self.trunk != null;
+    }
+
+    pub fn getTrunk(self: *Elephant) *Elephant {
+        return self.trunk.?;
+    }
 
     // ---------------------------------------------------
 
